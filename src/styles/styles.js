@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-	root: { padding: "30px 10px 10px 10px" },
+	root: {
+		padding: "30px 10px 10px 10px",
+	},
 	main: {
 		border: "1px solid #dddddd",
 		// border: "1px solid black",
@@ -12,12 +14,14 @@ const useStyles = makeStyles({
 	top: {
 		borderBottom: "1px solid #dddddd",
 		// border: "1px solid black",
+		gap: "3px",
 		width: "100vw",
 		height: "25vh",
 		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-		textAlign: "center",
+		flexDirection: "column",
+	},
+	textArea: {
+		width: "25%",
 	},
 });
 
