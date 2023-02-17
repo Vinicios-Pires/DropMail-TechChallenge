@@ -1,4 +1,4 @@
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 
 const AUTH_TOKEN = "outrotokensuperseguroRS";
 const CORS = "https://cors-anywhere.herokuapp.com/";
@@ -41,7 +41,7 @@ export const CHECK_EMAIL = gql`
   }
 `;
 
-export function useQuery() {
+export function useCheckEmailQuery() {
 	const CHECK_EMAIL = gql`
     query {
       session(id: "${sessionStorage.getItem("@SESSION_ID")}") {

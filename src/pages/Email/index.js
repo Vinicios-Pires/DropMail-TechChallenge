@@ -3,6 +3,7 @@ import { TextField, IconButton, Button } from "@material-ui/core";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
 import { GENERATE_EMAIL } from "../../utils/Client_apollo";
+import { useCheckEmailQuery } from "../../utils/Client_apollo";
 
 export default function Email() {
 	const [emailText, setEmailText] = useState("");
@@ -36,6 +37,24 @@ export default function Email() {
 		}
 	}
 
+	function DisplayEmails() {
+		const { data, errors, loading } = useCheckEmailQuery();
+
+		if (loading) return <p>Loading...</p>;
+		if (errors) return console.log(errors);
+
+		if (data) {
+			console.log(data);
+			return (
+				<div>
+					{data.session.mails.map((el, i) => (
+						<h1 key={i}>{el.text}</h1>
+					))}
+				</div>
+			);
+		}
+	}
+
 	return (
 		<>
 			<h1>Pagina do Email</h1>
@@ -60,6 +79,11 @@ export default function Email() {
 			<IconButton aria-label="ContentCopyIcon" onClick={handleCopyEmail}>
 				<ContentCopyIcon />
 			</IconButton>
+
+			<div>
+				<h1>INBOX</h1>
+				<DisplayEmails />
+			</div>
 		</>
 	);
 }
