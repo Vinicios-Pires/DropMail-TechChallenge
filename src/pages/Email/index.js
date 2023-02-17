@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
-import { TextField } from "@material-ui/core";
+import { TextField, IconButton, Button } from "@material-ui/core";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useEffect, useState } from "react";
 import { GENERATE_EMAIL } from "../../utils/Client_apollo";
 
@@ -26,35 +27,39 @@ export default function Email() {
 		}
 	}, []);
 
-	// function handleCopyEmail() {
-	// 	if (emailText.includes("@")) {
-	// 		navigator.clipboard.writeText(emailText);
-	// 		alert("Texto copiado!");
-	// 	} else {
-	// 		alert("Texto não copiado");
-	// 	}
-	// }
+	function handleCopyEmail() {
+		if (emailText.includes("@")) {
+			navigator.clipboard.writeText(emailText);
+			alert("Texto copiado!");
+		} else {
+			alert("Texto não copiado");
+		}
+	}
 
 	return (
 		<>
 			<h1>Pagina do Email</h1>
-			<form>
-				<TextField
-					id="email"
-					placeholder="Email"
-					value={emailText}
-					variant="outlined"
-					size="small"
-					inputProps={{
-						readOnly: true,
-					}}
-					onClick={handleGenerateEmail}
-				>
-					{emailText}
-				</TextField>
-				{/* <button onClick={handleCopyEmail}>Copiar Email</button> */}
-			</form>
-			<div></div>
+
+			<TextField
+				id="email"
+				placeholder="Email"
+				value={emailText}
+				variant="outlined"
+				size="small"
+				inputProps={{
+					readOnly: true,
+				}}
+			>
+				{emailText}
+			</TextField>
+
+			<Button variant="contained" onClick={handleGenerateEmail}>
+				Gerar Email
+			</Button>
+
+			<IconButton aria-label="ContentCopyIcon" onClick={handleCopyEmail}>
+				<ContentCopyIcon />
+			</IconButton>
 		</>
 	);
 }
