@@ -39,18 +39,41 @@ export default function Email() {
 
 	function DisplayEmails() {
 		const { data, errors, loading } = useCheckEmailQuery();
+		// const { defaultWelcomeEmail, setDefaultWelcomeEmail } = useState({});
 
 		if (loading) return <p>Loading...</p>;
 		if (errors) return console.log(errors);
 
 		if (data) {
 			console.log(data);
+
+			// const defaultWelcomeEmail = {
+			// 	header: "Hello",
+			// 	header2: "Welcome",
+			// 	text: `Hi ${sessionStorage.getItem("@TEMP_EMAIL")},\n
+			// 				 Your temp e-mail address is ready\n
+			// 				 if you need help read the information below and do not hesitate to contact us.\n
+
+			// 				 All the best,\n
+			// 				 DropMail`,
+			// };
+
 			return (
-				<div>
-					{data.session.mails.map((el, i) => (
-						<h1 key={i}>{el.text}</h1>
-					))}
-				</div>
+				// <>
+				// 	<p>Cabeçalho: {defaultWelcomeEmail.header}</p>
+				// 	<p>Cabeçalho2: {defaultWelcomeEmail.header2}</p>
+				// 	<p>Texto: {defaultWelcomeEmail.text}</p>
+				// </>
+				<>
+					<div>
+						{data.session.mails.map((el, i) => (
+							<>
+								<h1 key={i}>{el.headerSubject}</h1>
+								<p key={i + 1}>{el.text}</p>
+							</>
+						))}
+					</div>
+				</>
 			);
 		}
 	}

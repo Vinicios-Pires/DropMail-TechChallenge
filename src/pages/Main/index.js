@@ -53,9 +53,7 @@ export default function Main() {
 				<Box className={classes.main}>
 					<Box className={classes.top}>
 						<Box className={classes.areaText}>
-							<Typography>
-								Your temporary email address
-							</Typography>
+							<Typography>Your temporary email address</Typography>
 							{emailText.includes("@") ? (
 								<TextField
 									id="email"
@@ -76,9 +74,7 @@ export default function Main() {
 													onClick={handleCopyEmail}
 												>
 													<ContentCopyIcon />
-													<Typography>
-														Copy
-													</Typography>
+													<Typography>Copy</Typography>
 												</IconButton>
 											</InputAdornment>
 										),

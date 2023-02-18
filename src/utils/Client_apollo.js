@@ -1,6 +1,6 @@
 import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 
-const AUTH_TOKEN = "outrotokensuperseguroRS";
+const AUTH_TOKEN = "tokensupersegurors";
 const CORS = "https://cors-anywhere.herokuapp.com/";
 
 const client = new ApolloClient({
