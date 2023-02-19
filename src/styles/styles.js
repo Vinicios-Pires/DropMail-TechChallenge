@@ -69,6 +69,7 @@ const useStyles = makeStyles({
 		display: "flex",
 		alignItems: "center",
 		textAlign: "center",
+		justifyContent: "space-between",
 		borderBottom: `${borderStyled}`,
 		height: "4vh",
 		width: "100%",

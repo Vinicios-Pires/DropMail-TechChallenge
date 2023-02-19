@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
 	Box,
+	Button,
 	Divider,
 	IconButton,
 	InputAdornment,
@@ -11,17 +12,38 @@ import {
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
+
+if ("Notification" in window) {
+	Notification.requestPermission();
+	// Notification.requestPermission().then(function (permission) {
+	// 	if (permission === "granted") {
+	// 		alert("Permissao para notificacoes permitida");
+	// 	} else if (permission === "denied") {
+	// 		alert("Permissao para notificacoes bloqueada");
+	// 	}
+	// });
+}
 
 export default function Main() {
 	const classes = useStyles();
 	const [emailText, setEmailText] = useState("");
 	const [headerEmail, setHeaderEmail] = useState("");
 	const [textEmail, setTextEmail] = useState("");
+	const [welcomeHeader, setWelcomeHeader] = useState("");
 	const [welcomeText, setWelcomeText] = useState("");
 	const [count, setCount] = useState(1);
+
+	function permission() {
+		if (Notification.permission === "denied") {
+			window.location.href = "chrome://settings/content/notifications";
+		} else if (Notification.permission === "granted") {
+			Notification.requestPermission();
+		}
+	}
 
 	const [handleGenerateEmail] = useMutation(GENERATE_EMAIL, {
 		onCompleted: (el) => {
@@ -52,13 +74,13 @@ export default function Main() {
 		}
 	}
 
-	useEffect(() => {
-		setTimeout(() => {
-			if (count < 15) {
-				setCount(count + 1);
-			}
-		}, 1000);
+	// setTimeout(() => {
+	// 	if (count < 15) {
+	// 		setCount(count + 1);
+	// 	}
+	// }, 1000);
 
+	useEffect(() => {
 		// if (count === 15) {
 		// 	window.location.reload(false);
 		// }
@@ -68,10 +90,6 @@ export default function Main() {
 		const { data, errors, loading } = useCheckEmailQuery();
 
 		if (errors) return console.log(errors);
-
-		if (loading) {
-			return <p>Carregando email's</p>;
-		}
 
 		const defaultWelcomeEmail = {
 			header: "Hello",
@@ -90,9 +108,10 @@ export default function Main() {
 								height: "82px",
 								cursor: "pointer",
 							}}
-							onClick={() =>
-								setWelcomeText(defaultWelcomeEmail.text)
-							}
+							onClick={() => {
+								setWelcomeText(defaultWelcomeEmail.text);
+								setWelcomeHeader(defaultWelcomeEmail.header);
+							}}
 						>
 							<Typography style={{ fontWeight: "bold" }}>
 								{defaultWelcomeEmail.header}
@@ -231,15 +250,7 @@ export default function Main() {
 										justifyContent: "center",
 										marginTop: "10px",
 									}}
-								>
-									{/* <CircularProgressBar /> */}
-									<RefreshIcon
-										style={{ cursor: "pointer" }}
-										onClick={() =>
-											window.location.reload(false)
-										}
-									/>
-								</Box>
+								></Box>
 							</>
 						)}
 					</Box>
@@ -255,7 +266,25 @@ export default function Main() {
 					</Box>
 					<Box className={classes.readingPane_panel}>
 						<Box className={classes.notificationButtonPanel}>
-							<Typography>Botao de Notificacao</Typography>
+							<IconButton onClick={permission}>
+								<CircleNotificationsIcon
+									style={{
+										fontSize: "35px",
+										cursor: "pointer",
+									}}
+								/>
+							</IconButton>
+							<Button
+								style={{
+									backgroundColor: "#727272",
+									color: "#FFF",
+									marginRight: "10px",
+								}}
+								variant="contained"
+								onClick={handleGenerateEmail}
+							>
+								Click to generate other email
+							</Button>
 						</Box>
 						<Box className={classes.readingPane_box}>
 							<Typography
@@ -264,7 +293,9 @@ export default function Main() {
 									fontWeight: "bold",
 								}}
 							>
-								{headerEmail === "" ? "Welcome" : headerEmail}
+								{headerEmail === ""
+									? welcomeHeader
+									: headerEmail}
 							</Typography>
 							<Box className={classes.readingPane}>
 								<Typography>
