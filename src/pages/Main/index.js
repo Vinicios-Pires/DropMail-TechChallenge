@@ -79,6 +79,7 @@ export default function Main() {
 									key={i + 3}
 									className={classes.styled_boxEmail}
 									onClick={() => console.log(el)}
+									style={{ cursor: "pointer" }}
 								>
 									<Typography
 										key={i}
