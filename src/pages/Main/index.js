@@ -53,7 +53,9 @@ export default function Main() {
 				<Box className={classes.main}>
 					<Box className={classes.top}>
 						<Box className={classes.areaText}>
-							<Typography>Your temporary email address</Typography>
+							<Typography>
+								Your temporary email address
+							</Typography>
 							{emailText.includes("@") ? (
 								<TextField
 									id="email"
@@ -74,7 +76,9 @@ export default function Main() {
 													onClick={handleCopyEmail}
 												>
 													<ContentCopyIcon />
-													<Typography>Copy</Typography>
+													<Typography>
+														Copy
+													</Typography>
 												</IconButton>
 											</InputAdornment>
 										),
@@ -95,6 +99,19 @@ export default function Main() {
 									onClick={handleGenerateEmail}
 								></TextField>
 							)}
+						</Box>
+					</Box>
+					<Box className={classes.bottom}>
+						<Box className={classes.bottom_inbox}>
+							<Box className={classes.inbox}>
+								<Typography>Inbox</Typography>
+							</Box>
+							<Box className={classes.emails}>
+								<Typography>Emails</Typography>
+							</Box>
+						</Box>
+						<Box className={classes.readingPane}>
+							<h1>teste 2</h1>
 						</Box>
 					</Box>
 				</Box>
