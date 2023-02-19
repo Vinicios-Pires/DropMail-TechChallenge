@@ -59,11 +59,6 @@ export default function Email() {
 			// };
 
 			return (
-				// <>
-				// 	<p>Cabeçalho: {defaultWelcomeEmail.header}</p>
-				// 	<p>Cabeçalho2: {defaultWelcomeEmail.header2}</p>
-				// 	<p>Texto: {defaultWelcomeEmail.text}</p>
-				// </>
 				<>
 					<div>
 						{data.session.mails.map((el, i) => (
