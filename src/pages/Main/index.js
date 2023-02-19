@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
@@ -17,9 +18,10 @@ import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
 export default function Main() {
 	const classes = useStyles();
 	const [emailText, setEmailText] = useState("");
-	// const { data, errors, loading } = useCheckEmailQuery();
-
-	// if (errors) return console.log(errors);
+	const [headerEmail, setHeaderEmail] = useState("");
+	const [textEmail, setTextEmail] = useState("");
+	const [welcomeText, setWelcomeText] = useState("");
+	const [count, setCount] = useState(1);
 
 	const [handleGenerateEmail] = useMutation(GENERATE_EMAIL, {
 		onCompleted: (el) => {
@@ -50,6 +52,18 @@ export default function Main() {
 		}
 	}
 
+	useEffect(() => {
+		setTimeout(() => {
+			if (count < 15) {
+				setCount(count + 1);
+			}
+		}, 1000);
+
+		// if (count === 15) {
+		// 	window.location.reload(false);
+		// }
+	}, [count]);
+
 	function DisplayEmails() {
 		const { data, errors, loading } = useCheckEmailQuery();
 
@@ -59,6 +73,12 @@ export default function Main() {
 			return <p>Carregando email's</p>;
 		}
 
+		const defaultWelcomeEmail = {
+			header: "Hello",
+			header2: "Welcome",
+			text: `Hi user,\nYour temp e-mail address is ready\nif you need help read the information below and do not hesitate to contact us.\nAll the best,\nDropMail`,
+		};
+
 		if (data) {
 			return (
 				<>
@@ -66,28 +86,53 @@ export default function Main() {
 						<Box
 							className={classes.styled_boxEmail}
 							style={{
-								alignItems: "center",
 								justifyContent: "center",
+								height: "82px",
+								cursor: "pointer",
 							}}
+							onClick={() =>
+								setWelcomeText(defaultWelcomeEmail.text)
+							}
 						>
-							<Typography>Nenhum email recebido</Typography>
+							<Typography style={{ fontWeight: "bold" }}>
+								{defaultWelcomeEmail.header}
+							</Typography>
+							<Typography
+								style={{ fontWeight: "bold", color: "#0078da" }}
+							>
+								{defaultWelcomeEmail.header2}
+							</Typography>
+							<Typography style={{ color: "#8f949f" }}>
+								{defaultWelcomeEmail.text.length <= 20
+									? defaultWelcomeEmail.text
+									: defaultWelcomeEmail.text.substring(
+											0,
+											25
+									  ) + "..."}
+							</Typography>
 						</Box>
 					) : (
 						<>
 							{data.session.mails.map((el, i) => (
 								<Box
-									key={i + 3}
+									key={i}
 									className={classes.styled_boxEmail}
-									onClick={() => console.log(el)}
+									onClick={() => {
+										setHeaderEmail(el.headerSubject);
+										setTextEmail(el.text);
+									}}
 									style={{ cursor: "pointer" }}
 								>
 									<Typography
-										key={i}
+										key={i + 2}
 										style={{ fontWeight: "bold" }}
 									>
-										{el.headerSubject}
+										{el.headerSubject.length <= 25
+											? el.headerSubject
+											: el.headerSubject.substr(0, 25) +
+											  "..."}
 									</Typography>
-									<Typography key={i + 1}>
+									<Typography key={i + 3}>
 										{el.text.length <= 20
 											? el.text
 											: el.text.substr(0, 20) + "..."}
@@ -108,45 +153,94 @@ export default function Main() {
 					<Box className={classes.areaText}>
 						<Typography>Your temporary email address</Typography>
 						{emailText.includes("@") ? (
-							<TextField
-								id="email"
-								placeholder="Email"
-								value={emailText}
-								variant="outlined"
-								size="small"
-								inputProps={{
-									readOnly: true,
-								}}
-								fullWidth
-								InputProps={{
-									endAdornment: (
-										<InputAdornment position="end">
-											<Divider orientation="vertical" />
-											<IconButton
-												aria-label="ContentCopyIcon"
-												onClick={handleCopyEmail}
-											>
-												<ContentCopyIcon />
-												<Typography>Copy</Typography>
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
-							>
-								{emailText}
-							</TextField>
+							<>
+								<TextField
+									id="email"
+									placeholder="Email"
+									value={emailText}
+									variant="outlined"
+									size="small"
+									inputProps={{
+										readOnly: true,
+									}}
+									fullWidth
+									InputProps={{
+										endAdornment: (
+											<InputAdornment position="end">
+												<Divider orientation="vertical" />
+												<IconButton
+													aria-label="ContentCopyIcon"
+													onClick={handleCopyEmail}
+												>
+													<ContentCopyIcon />
+													<Typography>
+														Copy
+													</Typography>
+												</IconButton>
+											</InputAdornment>
+										),
+									}}
+								>
+									{emailText}
+								</TextField>
+								<Box
+									style={{
+										display: "flex",
+										justifyContent: "center",
+										marginTop: "10px",
+									}}
+								>
+									<Box>
+										<Typography>
+											Autorefresh in {count}
+										</Typography>
+									</Box>
+									<Box
+										style={{
+											display: "flex",
+											gap: "2px",
+											marginLeft: "8px",
+										}}
+									>
+										<RefreshIcon
+											style={{ cursor: "pointer" }}
+											onClick={() =>
+												window.location.reload(false)
+											}
+										/>
+										<Typography>Refresh</Typography>
+									</Box>
+								</Box>
+							</>
 						) : (
-							<TextField
-								id="email"
-								placeholder="Click to Generate a Temp Email"
-								value={emailText}
-								variant="outlined"
-								size="small"
-								inputProps={{
-									readOnly: true,
-								}}
-								onClick={handleGenerateEmail}
-							></TextField>
+							<>
+								<TextField
+									id="email"
+									placeholder="Click to Generate a Temp Email"
+									value={emailText}
+									variant="outlined"
+									size="small"
+									inputProps={{
+										readOnly: true,
+									}}
+									onClick={handleGenerateEmail}
+								></TextField>
+								<Box
+									style={{
+										display: "flex",
+										justifyContent: "center",
+										marginTop: "10px",
+									}}
+								>
+									{/* <CircularProgressBar /> */}
+									<RefreshIcon
+										style={{ cursor: "pointer" }}
+										onClick={() =>
+											window.location.reload(false)
+										}
+									/>
+								</Box>
+							</>
 						)}
 					</Box>
 				</Box>
@@ -164,11 +258,18 @@ export default function Main() {
 							<Typography>Botao de Notificacao</Typography>
 						</Box>
 						<Box className={classes.readingPane_box}>
-							<Typography style={{ marginLeft: "8px" }}>
-								Cabeçalho
+							<Typography
+								style={{
+									marginLeft: "8px",
+									fontWeight: "bold",
+								}}
+							>
+								{headerEmail === "" ? "Welcome" : headerEmail}
 							</Typography>
 							<Box className={classes.readingPane}>
-								<Typography>Texto do Email</Typography>
+								<Typography>
+									{textEmail === "" ? welcomeText : textEmail}
+								</Typography>
 							</Box>
 						</Box>
 					</Box>

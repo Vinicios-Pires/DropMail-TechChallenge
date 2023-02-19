@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Main from "./pages/Main";
-import Email from "./pages/Email";
 
 import "./styles/reset.css";
 
@@ -10,8 +9,7 @@ function App() {
 		<>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/main" element={<Main />} />
-					<Route path="/email" element={<Email />} />
+					<Route path="/" element={<Main />} />
 				</Routes>
 			</BrowserRouter>
 		</>

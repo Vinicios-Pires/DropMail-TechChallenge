@@ -81,7 +81,7 @@ const useStyles = makeStyles({
 		width: "100%",
 	},
 	readingPane: {
-		padding: "3px",
+		padding: "7px",
 		display: "flex",
 		width: "100%",
 		height: "68vh",
