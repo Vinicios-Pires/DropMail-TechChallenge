@@ -8,7 +8,7 @@ import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 	var open = XMLHttpRequest.prototype.open;
 	XMLHttpRequest.prototype.open = function () {
 		var args = slice.call(arguments);
-		var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+		var targetOrigin = /^https?:\/\/([^/]+)/i.exec(args[1]);
 		if (
 			targetOrigin &&
 			targetOrigin[0].toLowerCase() !== origin &&
@@ -30,7 +30,7 @@ const client = new ApolloClient({
 	},
 	headers: {
 		ContentType: "application/json",
-		"access-control-allow-origin": "*",
+		"Access-Control-Allow-Origin": "*",
 	},
 	cache: new InMemoryCache(),
 });

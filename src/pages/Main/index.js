@@ -14,7 +14,6 @@ import {
 
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
@@ -28,14 +27,33 @@ export default function Main() {
 	const [welcomeText, setWelcomeText] = useState("");
 	const [count, setCount] = useState(15);
 
+	(function () {
+		var cors_api_host = "cors-anywhere.herokuapp.com";
+		var cors_api_url = "https://" + cors_api_host + "/";
+		var slice = [].slice;
+		var origin = window.location.protocol + "//" + window.location.host;
+		var open = XMLHttpRequest.prototype.open;
+		XMLHttpRequest.prototype.open = function () {
+			var args = slice.call(arguments);
+			var targetOrigin = /^https?:\/\/([^/]+)/i.exec(args[1]);
+			if (
+				targetOrigin &&
+				targetOrigin[0].toLowerCase() !== origin &&
+				targetOrigin[1] !== cors_api_host
+			) {
+				args[1] = cors_api_url + args[1];
+			}
+			return open.apply(this, args);
+		};
+	})();
+
 	function permission() {
-		if ("Notification" in window) {
-			Notification.requestPermission();
-		} else {
-			alert("Seu navegador não possui suporte para notificação desktop.");
-		}
-		if (Notification.permission === "denied") {
-			window.location.href = "chrome://settings/content/notifications";
+		if (window.Notification.permission !== "granted") {
+			window.Notification.requestPermission((permission) => {
+				if (permission === "granted") {
+					alert("Notificações habilitadas.");
+				}
+			});
 		}
 	}
 
@@ -308,19 +326,25 @@ DropMail`,
 							<Typography>Inbox</Typography>
 						</Box>
 						<Box className={classes.emails}>
-							<DisplayEmails  />
+							<DisplayEmails />
 						</Box>
 					</Box>
 					<Box className={classes.readingPane_panel}>
 						<Box className={classes.notificationButtonPanel}>
-							<IconButton onClick={permission}>
-								<CircleNotificationsIcon
-									style={{
-										fontSize: "30px",
-										cursor: "pointer",
-									}}
-								/>
-							</IconButton>
+							<Button
+								style={{
+									backgroundColor: "#727272",
+									color: "#FFF",
+									marginRight: "10px",
+									height: "3vh",
+								}}
+								variant="contained"
+								onClick={permission}
+							>
+								<Typography style={{ fontSize: "11px" }}>
+									receber notificações
+								</Typography>
+							</Button>
 							<Button
 								style={{
 									backgroundColor: "#727272",
