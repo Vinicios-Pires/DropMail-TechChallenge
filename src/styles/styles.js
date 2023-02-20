@@ -4,13 +4,13 @@ const borderStyled = "1px solid #dddddd";
 
 const useStyles = makeStyles({
 	root: {
-		padding: "30px 15px 0px 15px",
+		// padding: "30px 15px 0px 15px",
 	},
 	main: {
 		display: "flex",
 		flexDirection: "column",
-		height: "95vh",
-		width: "98vw",
+		height: "100vh",
+		width: "100vw",
 	},
 	top: {
 		border: `${borderStyled}`,
@@ -26,10 +26,11 @@ const useStyles = makeStyles({
 	areaText: {
 		display: "flex",
 		flexDirection: "column",
-		width: "25vw",
+		width: "50vw",
 	},
 	bottom: {
 		display: "flex",
+		width: "100%",
 	},
 	inbox_panel: {
 		display: "flex",
@@ -40,6 +41,7 @@ const useStyles = makeStyles({
 		borderBottomLeftRadius: 2,
 		borderBottomRightRadius: 2,
 		width: "18.1vw",
+		minWidth: "110px",
 	},
 	inbox: {
 		padding: "7px",
@@ -61,7 +63,7 @@ const useStyles = makeStyles({
 		display: "flex",
 		flexDirection: "column",
 		borderBottom: `${borderStyled}`,
-		width: "80vw",
+		width: "100vw",
 		borderRight: `${borderStyled}`,
 		background: "#f8f8f8",
 	},
@@ -96,10 +98,14 @@ const useStyles = makeStyles({
 		padding: "3.7px",
 		display: "flex",
 		flexDirection: "column",
+		justifyContent: "center",
 		borderBottom: `${borderStyled}`,
 		height: "6vh",
-		minHeight: "62px",
+		minHeight: "130px",
 		width: "100%",
+		"&:hover": {
+			backgroundColor: "#f8f8f8",
+		},
 	},
 });
 

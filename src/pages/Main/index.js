@@ -6,6 +6,7 @@ import {
 	Divider,
 	IconButton,
 	InputAdornment,
+	TextareaAutosize,
 	TextField,
 	Typography,
 } from "@material-ui/core";
@@ -86,15 +87,13 @@ export default function Main() {
 		if (errors) return console.log(errors);
 
 		const defaultWelcomeEmail = {
-			header: "Hello",
-			header2: "Welcome",
-			text: `
-			Hi user,
-			Your temp e-mail address is ready
-			If you need help read the information below and do not hesitate to contact us.
-			All the best,
-			DropMail
-			`,
+			from: "Hello",
+			header: "Welcome",
+			text: `Hi user,
+Your temp e-mail address is ready
+If you need help read the information below and do not hesitate to contact us.
+All the best,
+DropMail`,
 		};
 
 		if (data) {
@@ -114,12 +113,12 @@ export default function Main() {
 							}}
 						>
 							<Typography style={{ fontWeight: "bold" }}>
-								{defaultWelcomeEmail.header}
+								{defaultWelcomeEmail.from}
 							</Typography>
 							<Typography
 								style={{ fontWeight: "bold", color: "#0078da" }}
 							>
-								{defaultWelcomeEmail.header2}
+								{defaultWelcomeEmail.header}
 							</Typography>
 							<Typography style={{ color: "#8f949f" }}>
 								{defaultWelcomeEmail.text.length <= 20
@@ -143,12 +142,25 @@ export default function Main() {
 									style={{ cursor: "pointer" }}
 								>
 									<Typography
-										key={i + 2}
-										style={{ fontWeight: "bold" }}
+										key={i + 4}
+										style={{
+											fontWeight: "bold",
+										}}
 									>
-										{el.headerSubject.length <= 25
+										{el.fromAddr.length <= 14
+											? el.fromAddr
+											: el.fromAddr.substr(0, 14) + "..."}
+									</Typography>
+									<Typography
+										key={i + 2}
+										style={{
+											fontWeight: "bold",
+											color: "#0078da",
+										}}
+									>
+										{el.headerSubject.length <= 20
 											? el.headerSubject
-											: el.headerSubject.substr(0, 25) +
+											: el.headerSubject.substr(0, 20) +
 											  "..."}
 									</Typography>
 									<Typography key={i + 3}>
@@ -292,9 +304,20 @@ export default function Main() {
 									: headerEmail}
 							</Typography>
 							<Box className={classes.readingPane}>
-								<Typography>
-									{textEmail === "" ? welcomeText : textEmail}
-								</Typography>
+								<TextareaAutosize
+									value={
+										textEmail === ""
+											? welcomeText
+											: textEmail
+									}
+									style={{
+										width: "100%",
+										height: "100%",
+										resize: "none",
+										fontSize: "18px",
+										outline: "none",
+									}}
+								/>
 							</Box>
 						</Box>
 					</Box>
