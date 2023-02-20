@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client";
 import {
 	Box,
 	Button,
+	CircularProgress,
 	Divider,
 	IconButton,
 	InputAdornment,
@@ -26,6 +27,26 @@ export default function Main() {
 	const [welcomeHeader, setWelcomeHeader] = useState("");
 	const [welcomeText, setWelcomeText] = useState("");
 	const [count, setCount] = useState(15);
+
+	(function () {
+		var cors_api_host = "cors-anywhere.herokuapp.com";
+		var cors_api_url = "https://" + cors_api_host + "/";
+		var slice = [].slice;
+		var origin = window.location.protocol + "//" + window.location.host;
+		var open = XMLHttpRequest.prototype.open;
+		XMLHttpRequest.prototype.open = function () {
+			var args = slice.call(arguments);
+			var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+			if (
+				targetOrigin &&
+				targetOrigin[0].toLocaleLowerCase() !== origin &&
+				targetOrigin[1] !== cors_api_host
+			) {
+				args[1] = cors_api_url + args[1];
+			}
+			return open.apply(this, args);
+		};
+	})();
 
 	function permission() {
 		if ("Notification" in window) {
@@ -67,16 +88,6 @@ export default function Main() {
 		}
 	}
 
-	setTimeout(() => {
-		if (count > 1) {
-			setCount(count - 1);
-		}
-	}, 1000);
-
-	if (count === 1) {
-		window.location.reload(false);
-	}
-
 	function DisplayEmails() {
 		const { data, errors } = useCheckEmailQuery();
 
@@ -93,6 +104,16 @@ DropMail`,
 		};
 
 		if (data) {
+			setTimeout(() => {
+				if (count > 1) {
+					setCount(count - 1);
+				}
+			}, 1000);
+
+			if (count === 1) {
+				window.location.reload(false);
+			}
+
 			return (
 				<>
 					{data.session.mails.length === 0 ? (
@@ -217,16 +238,61 @@ DropMail`,
 										marginTop: "10px",
 									}}
 								>
-									<Box>
-										<Typography>
-											Autorefresh in {count}
+									<Box
+										style={{
+											display: "inline-flex",
+											textAlign: "center",
+											justifyContent: "center",
+											alignItems: "center",
+										}}
+									>
+										<Typography
+											style={{ marginRight: "7px" }}
+										>
+											Autorefresh in
 										</Typography>
+										<Box
+											style={{
+												position: "relative",
+												display: "inline-flex",
+											}}
+										>
+											<CircularProgress
+												variant="determinate"
+												value={(count * 100) / 15}
+												style={{ width: "35px" }}
+											/>
+											<Box
+												style={{
+													top: 0,
+													left: 0,
+													bottom: 0,
+													right: 6,
+													position: "absolute",
+													display: "flex",
+													alignItems: "center",
+													justifyContent: "center",
+												}}
+											>
+												<Typography
+													variant="caption"
+													style={{
+														fontSize: "14px",
+														textAlign: "center",
+													}}
+												>
+													{count}
+												</Typography>
+											</Box>
+										</Box>
 									</Box>
 									<Box
 										style={{
 											display: "flex",
 											gap: "2px",
 											marginLeft: "8px",
+											alignItems: "center",
+											textAlign: "center",
 										}}
 									>
 										<RefreshIcon
