@@ -17,16 +17,9 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
 
-if ("Notification" in window) {
-	Notification.requestPermission();
-	// Notification.requestPermission().then(function (permission) {
-	// 	if (permission === "granted") {
-	// 		alert("Permissao para notificacoes permitida");
-	// 	} else if (permission === "denied") {
-	// 		alert("Permissao para notificacoes bloqueada");
-	// 	}
-	// });
-}
+// if ("Notification" in window) {
+// 	Notification.requestPermission();
+// }
 
 export default function Main() {
 	const classes = useStyles();
@@ -35,13 +28,16 @@ export default function Main() {
 	const [textEmail, setTextEmail] = useState("");
 	const [welcomeHeader, setWelcomeHeader] = useState("");
 	const [welcomeText, setWelcomeText] = useState("");
-	const [count, setCount] = useState(1);
+	const [count, setCount] = useState(15);
 
 	function permission() {
+		if ("Notification" in window) {
+			Notification.requestPermission();
+		} else {
+			alert("Seu navegador não possui suporte para notificação desktop.");
+		}
 		if (Notification.permission === "denied") {
 			window.location.href = "chrome://settings/content/notifications";
-		} else if (Notification.permission === "granted") {
-			Notification.requestPermission();
 		}
 	}
 
@@ -74,27 +70,31 @@ export default function Main() {
 		}
 	}
 
-	// setTimeout(() => {
-	// 	if (count < 15) {
-	// 		setCount(count + 1);
-	// 	}
-	// }, 1000);
+	setTimeout(() => {
+		if (count > 1) {
+			setCount(count - 1);
+		}
+	}, 1000);
 
-	useEffect(() => {
-		// if (count === 15) {
-		// 	window.location.reload(false);
-		// }
-	}, [count]);
+	if (count === 1) {
+		window.location.reload(false);
+	}
 
 	function DisplayEmails() {
-		const { data, errors, loading } = useCheckEmailQuery();
+		const { data, errors } = useCheckEmailQuery();
 
 		if (errors) return console.log(errors);
 
 		const defaultWelcomeEmail = {
 			header: "Hello",
 			header2: "Welcome",
-			text: `Hi user,\nYour temp e-mail address is ready\nif you need help read the information below and do not hesitate to contact us.\nAll the best,\nDropMail`,
+			text: `
+			Hi user,
+			Your temp e-mail address is ready
+			If you need help read the information below and do not hesitate to contact us.
+			All the best,
+			DropMail
+			`,
 		};
 
 		if (data) {
@@ -105,7 +105,7 @@ export default function Main() {
 							className={classes.styled_boxEmail}
 							style={{
 								justifyContent: "center",
-								height: "82px",
+								minHeight: "150px",
 								cursor: "pointer",
 							}}
 							onClick={() => {
@@ -244,13 +244,6 @@ export default function Main() {
 									}}
 									onClick={handleGenerateEmail}
 								></TextField>
-								<Box
-									style={{
-										display: "flex",
-										justifyContent: "center",
-										marginTop: "10px",
-									}}
-								></Box>
 							</>
 						)}
 					</Box>
@@ -269,7 +262,7 @@ export default function Main() {
 							<IconButton onClick={permission}>
 								<CircleNotificationsIcon
 									style={{
-										fontSize: "35px",
+										fontSize: "30px",
 										cursor: "pointer",
 									}}
 								/>
@@ -279,11 +272,12 @@ export default function Main() {
 									backgroundColor: "#727272",
 									color: "#FFF",
 									marginRight: "10px",
+									height: "3vh",
 								}}
 								variant="contained"
 								onClick={handleGenerateEmail}
 							>
-								Click to generate other email
+								Click to generate email
 							</Button>
 						</Box>
 						<Box className={classes.readingPane_box}>

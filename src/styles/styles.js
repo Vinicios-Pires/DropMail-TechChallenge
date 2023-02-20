@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 		alignItems: "center",
 		textAlign: "center",
 		height: "25vh",
-		minHeight: "94px",
+		minHeight: "190px",
 	},
 	areaText: {
 		display: "flex",
@@ -48,6 +48,7 @@ const useStyles = makeStyles({
 		textAlign: "center",
 		borderBottom: `${borderStyled}`,
 		height: "4vh",
+		minHeight: "34px",
 		width: "100%",
 	},
 	emails: {
@@ -72,6 +73,7 @@ const useStyles = makeStyles({
 		justifyContent: "space-between",
 		borderBottom: `${borderStyled}`,
 		height: "4vh",
+		minHeight: "34px",
 		width: "100%",
 	},
 	readingPane_box: {

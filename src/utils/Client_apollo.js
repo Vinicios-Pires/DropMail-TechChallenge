@@ -57,9 +57,9 @@ export function useCheckEmailQuery() {
     }
   `;
 
-	const { data, errors, loading } = useQuery(CHECK_EMAIL);
+	const { data, errors } = useQuery(CHECK_EMAIL);
 
-	return { data, errors, loading };
+	return { data, errors  };
 }
 
 export default client;
