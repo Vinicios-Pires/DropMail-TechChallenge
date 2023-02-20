@@ -1,5 +1,25 @@
 import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 
+(function () {
+	var cors_api_host = "cors-anywhere.herokuapp.com";
+	var cors_api_url = "https://" + cors_api_host + "/";
+	var slice = [].slice;
+	var origin = window.location.protocol + "//" + window.location.host;
+	var open = XMLHttpRequest.prototype.open;
+	XMLHttpRequest.prototype.open = function () {
+		var args = slice.call(arguments);
+		var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+		if (
+			targetOrigin &&
+			targetOrigin[0].toLowerCase() !== origin &&
+			targetOrigin[1] !== cors_api_host
+		) {
+			args[1] = cors_api_url + args[1];
+		}
+		return open.apply(this, args);
+	};
+})();
+
 const AUTH_TOKEN = "tokensupersegurors";
 const CORS = "https://cors-anywhere.herokuapp.com/";
 
@@ -9,7 +29,8 @@ const client = new ApolloClient({
 		mode: "cors",
 	},
 	headers: {
-		ContentType: "text/json",
+		ContentType: "application/json",
+		"access-control-allow-origin": "*",
 	},
 	cache: new InMemoryCache(),
 });
@@ -59,7 +80,7 @@ export function useCheckEmailQuery() {
 
 	const { data, errors } = useQuery(CHECK_EMAIL);
 
-	return { data, errors  };
+	return { data, errors };
 }
 
 export default client;
