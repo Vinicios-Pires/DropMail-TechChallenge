@@ -4,7 +4,7 @@ const borderStyled = "1px solid #dddddd";
 
 const useStyles = makeStyles({
 	root: {
-		// padding: "30px 15px 0px 15px",
+		boxSizing: "border-box",
 	},
 	main: {
 		display: "flex",
