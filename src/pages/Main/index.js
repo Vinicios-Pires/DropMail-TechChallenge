@@ -18,10 +18,6 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
 
-// if ("Notification" in window) {
-// 	Notification.requestPermission();
-// }
-
 export default function Main() {
 	const classes = useStyles();
 	const [emailText, setEmailText] = useState("");
@@ -289,7 +285,9 @@ DropMail`,
 								variant="contained"
 								onClick={handleGenerateEmail}
 							>
-								Click to generate email
+								<Typography style={{ fontSize: "11px" }}>
+									generate email
+								</Typography>
 							</Button>
 						</Box>
 						<Box className={classes.readingPane_box}>
