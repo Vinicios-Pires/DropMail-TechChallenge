@@ -19,26 +19,6 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import useStyles from "../../styles/styles";
 import { GENERATE_EMAIL, useCheckEmailQuery } from "../../utils/Client_apollo";
 
-(function () {
-	var cors_api_host = "cors-anywhere.herokuapp.com";
-	var cors_api_url = "https://" + cors_api_host + "/";
-	var slice = [].slice;
-	var origin = window.location.protocol + "//" + window.location.host;
-	var open = XMLHttpRequest.prototype.open;
-	XMLHttpRequest.prototype.open = function () {
-		var args = slice.call(arguments);
-		var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
-		if (
-			targetOrigin &&
-			targetOrigin[0].toLocaleLowerCase() !== origin &&
-			targetOrigin[1] !== cors_api_host
-		) {
-			args[1] = cors_api_url + args[1];
-		}
-		return open.apply(this, args);
-	};
-})();
-
 export default function Main() {
 	const classes = useStyles();
 	const [emailText, setEmailText] = useState("");
@@ -328,7 +308,7 @@ DropMail`,
 							<Typography>Inbox</Typography>
 						</Box>
 						<Box className={classes.emails}>
-							<DisplayEmails />
+							<DisplayEmails  />
 						</Box>
 					</Box>
 					<Box className={classes.readingPane_panel}>
