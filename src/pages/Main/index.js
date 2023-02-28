@@ -365,6 +365,7 @@ DropMail`,
 										fontSize: "18px",
 										outline: "none",
 									}}
+									readOnly
 								/>
 							</Box>
 						</Box>

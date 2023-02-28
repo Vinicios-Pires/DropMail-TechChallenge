@@ -1,10 +1,9 @@
 import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 
-const AUTH_TOKEN = "tokensupersegurors";
-const CORS = "https://cors-anywhere.herokuapp.com/";
+const DROPMAIL_API_URL = `${process.env.REACT_APP_CORS_URL}${process.env.REACT_APP_DROPMAIL_API_URL}${process.env.AUTH_TOKEN}`;
 
 const client = new ApolloClient({
-	uri: `${CORS}https://dropmail.me/api/graphql/${AUTH_TOKEN}`,
+	uri: `${DROPMAIL_API_URL}`,
 	fetchOptions: {
 		mode: "cors",
 	},
